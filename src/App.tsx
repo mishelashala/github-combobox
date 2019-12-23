@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { reactRepositoryServiceFactory } from "./services/ReactRepositoryService";
+import { Issue } from "./models/Issue";
+import { IssueList } from "./atoms/IssueList";
+import { IssueItem } from "./atoms/IssueItem";
+
+const reactRepositoryService = reactRepositoryServiceFactory();
 
 const App: React.FC = () => {
+  const [isLoading, updateIsLoading] = React.useState(true);
+  const [issueList, updateIssueList] = React.useState<Issue[]>([]);
+
+  React.useEffect(() => {
+    reactRepositoryService.getIssueList().then(data => {
+      updateIsLoading(false);
+      updateIssueList(data);
+    });
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <article>
+      <IssueList>
+        {issueList.map(issue => {
+          return <IssueItem key={issue.id}>{issue.title}</IssueItem>;
+        })}
+      </IssueList>
+    </article>
   );
-}
+};
 
 export default App;
