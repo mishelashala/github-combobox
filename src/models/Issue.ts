@@ -1,3 +1,5 @@
+import { IssueLabel } from "./IssueLabel";
+
 export enum IssueStateType {
   OPEN = "open",
   CLOSE = "close"
@@ -6,6 +8,7 @@ export enum IssueStateType {
 export type Issue = {
   body: string;
   id: number;
+  labels: IssueLabel[];
   locked: boolean;
   state: IssueStateType;
   title: string;
