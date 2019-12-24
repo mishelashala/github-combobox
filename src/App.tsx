@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { reactRepositoryServiceFactory } from "./services/ReactRepositoryService";
 import { Issue } from "./models/Issue";
 import { Title } from "./atoms/Title";
@@ -9,6 +8,11 @@ import { RemoveSelectedOption } from "./atoms/RemoveSelectedOption";
 import { SearchInput } from "./atoms/SearchInput";
 import { SearchOptionList } from "./atoms/SearchOptionList";
 import { SearchOptionItem } from "./atoms/SearchOptionItem";
+import { LabelListContainer } from "./atoms/LabelListContainer";
+import { LabelItem } from "./atoms/LabelItem";
+import { Text } from "./atoms/Text";
+import { Wrapper } from "./atoms/Wrapper";
+import { When } from "./components/When";
 
 const reactRepositoryService = reactRepositoryServiceFactory();
 
@@ -100,16 +104,20 @@ const App: React.FC = () => {
     updateSelectedIssue(null);
   };
 
+  const filteredIssueList = issueList.filter(
+    issue => issue.title.toLowerCase().search(searchValue.toLowerCase()) !== -1
+  );
+
   return (
-    <article>
+    <Wrapper>
       <Title>React's Issue List</Title>
       <SearchContainer>
-        {selectedIssue && (
+        <When predicate={selectedIssue !== null}>
           <SelectedOption>
-            {selectedIssue.title}
+            {selectedIssue?.title}
             <RemoveSelectedOption onClick={handleClickRemoveOption}>x</RemoveSelectedOption>
           </SelectedOption>
-        )}
+        </When>
         <SearchInput
           id="issue"
           name="issue"
@@ -121,24 +129,33 @@ const App: React.FC = () => {
           onFocus={handleFocusSearch}
           onKeyDown={handleKeyDownSearch}
         />
-        {isFocused && (
+        <When predicate={isFocused}>
           <SearchOptionList>
-            {issueList.map(issue => {
-              return (
-                <SearchOptionItem
-                  key={issue.id}
-                  isHovered={hoveredIssue === issue.id}
-                  onMouseDown={handleMouseDownOption(issue)}
-                  onMouseOver={handleMouseOverOption(issue.id)}
-                >
-                  {issue.title}
-                </SearchOptionItem>
-              );
-            })}
+            <When predicate={isLoading}>
+              <Text>Loading ...</Text>
+            </When>
+            <When predicate={!isLoading && !filteredIssueList.length}>
+              <Text>No issue matching that search</Text>
+            </When>
+            {filteredIssueList.map(issue => (
+              <SearchOptionItem
+                key={issue.id}
+                isHovered={hoveredIssue === issue.id}
+                onMouseDown={handleMouseDownOption(issue)}
+                onMouseOver={handleMouseOverOption(issue.id)}
+              >
+                {issue.title}
+                <LabelListContainer>
+                  {issue.labels.map(label => (
+                    <LabelItem color={label.color}>{label.name}</LabelItem>
+                  ))}
+                </LabelListContainer>
+              </SearchOptionItem>
+            ))}
           </SearchOptionList>
-        )}
+        </When>
       </SearchContainer>
-    </article>
+    </Wrapper>
   );
 };
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import * as colors from "../styles/colors";
 
 export const SelectedOption = styled.div`
-  background-color: ${colors.RED_OUTLINE};
+  background-color: ${colors.ORANGE_OUTLINE};
   border-radius: 0.75rem;
   color: white;
   display: inline-block;

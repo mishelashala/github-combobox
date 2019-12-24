@@ -10,7 +10,7 @@ export const SearchInput = styled.input.attrs({ type: "text" })`
   width: 100%;
 
   &:focus {
-    border-color: ${colors.RED_OUTLINE};
+    border-color: ${colors.ORANGE_OUTLINE};
     outline: none;
   }
 `;
