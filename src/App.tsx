@@ -2,79 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { reactRepositoryServiceFactory } from "./services/ReactRepositoryService";
 import { Issue } from "./models/Issue";
-import * as colors from "./styles/colors";
+import { Title } from "./atoms/Title";
+import { SearchContainer } from "./atoms/SearchContainer";
+import { SelectedOption } from "./atoms/SelectedOption";
+import { RemoveSelectedOption } from "./atoms/RemoveSelectedOption";
+import { SearchInput } from "./atoms/SearchInput";
+import { SearchOptionList } from "./atoms/SearchOptionList";
+import { SearchOptionItem } from "./atoms/SearchOptionItem";
 
 const reactRepositoryService = reactRepositoryServiceFactory();
-
-export const Title = styled.h1`
-  font-family: arial;
-`;
-
-export const SearchContainer = styled.div`
-  position: relative;
-`;
-
-export const SearchInput = styled.input.attrs({ type: "text" })`
-  border: 1.5px solid ${colors.GRAY_BORDER};
-  box-sizing: border-box;
-  display: block;
-  font-family: arial;
-  padding: 0.5rem;
-  width: 100%;
-
-  &:focus {
-    border-color: ${colors.RED_OUTLINE};
-    outline: none;
-  }
-`;
-
-export const SearchOptionList = styled.ul`
-  list-styled: none;
-  margin: 0;
-  padding: 0;
-`;
-
-export interface ISearchOptionItemProps {
-  isHovered: boolean;
-}
-
-export const SearchOptionItem = styled.li.attrs({ tabIndex: 0 })<ISearchOptionItemProps>`
-  background-color: ${props => (props.isHovered ? "gray" : "transparent")};
-  border: 1.5px solid transparent;
-  display: block;
-
-  &:focus {
-    border: 1.5px solid ${colors.RED_OUTLINE};
-    outline: none;
-  }
-`;
-
-const SelectedOption = styled.div`
-  background-color: ${colors.RED_OUTLINE};
-  border-radius: 0.75rem;
-  color: white;
-  display: inline-block;
-  font-family: arial;
-  margin-bottom: 0.5rem;
-  padding: 0.25rem 0.5rem;
-`;
-
-export const RemoveSelectedOption = styled.span`
-  background-color: white;
-  border-radius: 100%;
-  color: black;
-  display: inline-block;
-  font-family: arial;
-  height: 1rem;
-  line-height: 1rem;
-  margin: 0 0 0 0.5rem;
-  text-align: center;
-  width: 1rem;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 export enum EventKeySymbols {
   ARROW_DOWN = "ArrowDown",
